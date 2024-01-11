@@ -3,31 +3,35 @@
 import { useState } from 'react';
 import styles from './write.module.scss';
 import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
 
 export default function Write() {
+	const router = useRouter();
 	const [Post, setPost] = useState({ title: '', content: '' });
-	console.log(Post);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setPost({ ...Post, [name]: value });
 	};
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
-		const response = await fetch('/api/requestPost', {
+		fetch('/api/requestPost', {
 			method: 'POST',
 			headers: { 'Content-type': 'application/json' },
 			body: JSON.stringify(Post),
+		}).then((response) => {
+			if (response.ok) {
+				response.json().then((data) => {
+					console.log(data);
+					alert('글 저장에 성공했습니다.');
+					router.push('/post');
+				});
+			} else {
+				console.log(response);
+				alert('글 저장에 실패했습니다.');
+			}
 		});
-
-		if (response.ok) {
-			console.log(response);
-			alert('글 저장에 성공했습니다.');
-		} else {
-			console.log(response);
-			alert('글 저장에 실패했습니다.');
-		}
 	};
 
 	return (

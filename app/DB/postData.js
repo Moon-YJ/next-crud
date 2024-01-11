@@ -1,0 +1,1 @@
+export const postDB=[{"title":"aa","content":"aaa","id":0},{"title":"bb","content":"bbb","id":1},{"title":"ccc","content":"cc","id":2}]
